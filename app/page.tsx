@@ -3,7 +3,7 @@ import React from "react";
 import Particles from "./components/particles";
 
 const navigation = [
-  { name: "Projetos", href: "/projects" },
+  { name: "Projetos & Artigos", href: "/projects" },
   { name: "Contato", href: "/contact" },
 ];
 
@@ -16,7 +16,7 @@ export default function Home() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm duration-500 text-zinc-400 hover:text-zinc-300"
+              className="text-sm duration-500 text-zinc-500 hover:text-zinc-300"
             >
               {item.name}
             </Link>
@@ -37,17 +37,6 @@ export default function Home() {
         <h2 className="text-sm text-zinc-400 ">
           Engenheiro de Software formado pela USP | Apaixonado por tecnologia e inovação
         </h2>
-      </div>
-      
-      <div className="absolute bottom-8 max-w-2xl mx-auto px-8 animate-fade-in">
-        <blockquote className="text-center">
-          <p className="text-lg italic text-zinc-300 leading-relaxed mb-4">
-        "O mundo seria melhor se não houvesse tanta gente prometendo melhorá-lo."
-          </p>
-          <footer className="text-sm text-zinc-400">
-        — Olavo de Carvalho
-          </footer>
-        </blockquote>
       </div>
     </div>
   );
