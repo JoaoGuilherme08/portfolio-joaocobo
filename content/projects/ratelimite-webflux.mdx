@@ -1,0 +1,65 @@
+---
+title: Rate Limit com Webflux
+description: Olá devs, recentemente me encontrei com um problema de fluxo de dados, que estava sobrecarregando um servidor, e tive que pensar em alguma forma de controlar esse fluxo de dados para que ele não prejudicasse o server e resultaria em uma queda dos serviços.
+date: "2024-05-23"
+published: true
+---
+
+# Rate Limit com Webflux
+![](/webflux-ratelimite.png)
+
+Procurando alternativas para minha situação onde eu tinha uma aplicação Java Webflux com socket UDP aberto e recebia conexão de vários Clients(users), quando algum deles saia do padrão, e começava a mandar mais dados do que o planejado, o servidor se sobrecarregava, foi assim que eu encontrei o "resilience4j", com ele basicamente você pode configurar um rate-limit em sua aplicação, fazendo por exemplo: "um devido IP pode mandar até 3 mensagens dentro de 20 segundos." e caso esse IP ultrapasse essa regra, o Resilience4j entra em ação fazendo o controle das informações:
+
+![](/webflux-ratelimite2.png)
+> Fonte da imagem: https://docs.api7.ai/apisix/getting-started/rate-limiting
+
+
+### Duvidas:
+
+>  1. "Mas e as mensagens enviadas além do permitido, elas são perdidas?"
+
+R: Não, elas não são perdidas, entram em uma fila para ser posteriormente processadas, caso o tempo de timeout não seja ultrapassado.
+
+>  2.  "E os outros clientes são prejudicados?
+
+R: Não, os outros clientes não são prejudicados, na configuração do Resilience4j, você vai especificar qual a "Key" que precisa ser controlada exemplo:
+
+```
+@Service
+public class RateLimiterService {
+
+    @Autowired
+    private RateLimiterRegistry rateLimiterRegistry;
+
+    public Mono<Boolean> isAllowed(String ip) {
+        String key = "ratelimiter:" + ip;
+        RateLimiter rateLimiter = rateLimiterRegistry.rateLimiter(key);
+        boolean isAllowed = rateLimiter.acquirePermission();
+        return Mono.just(isAllowed);
+    }
+}
+
+```
+No código acima, configurei o "IP" do client pego pelo socket UDP para ser minha key: "ratelimiter:53.323...", para cada cliente vai ser controlado o fluxo de informações que foi especificado na configuração.
+
+```
+@Configuration
+public class RateLimiterConfiguration {
+
+    @Bean
+    public RateLimiterRegistry rateLimiterRegistry() {
+        RateLimiterConfig config = RateLimiterConfig.custom()
+                .limitForPeriod(3)
+                .limitRefreshPeriod(Duration.ofSeconds(20))
+                .timeoutDuration(Duration.ofMinutes(1))
+                .build();
+        return RateLimiterRegistry.of(config);
+    }
+}
+```
+
+No código acima, é exibido a seguinte configuração: "Dentro de 20 segundos, um cliente pode mandar até 3 mensagens.". O timeoutDuration define o tempo máximo que uma requisição pode ficar esperando para ser atendida antes de ser descartada. Em outras palavras, se a quantidade de requisições permitidas por período (limitForPeriod) for atingida, as requisições subsequentes podem ser colocadas em espera até que uma permissão seja liberada. 
+
+Isso significa que, se uma requisição chegar quando o limite de 3 requisições por 20 segundos já foi atingido, essa requisição pode ficar em espera por até 1 minuto caso ultrapasse o tempo, a requisição será descartada e um erro será retornado para o cliente.
+
+Uma solução viável para controle de fluxo de informações que chegam em sua aplicação, e proteção contra DDoS.

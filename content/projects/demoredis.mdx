@@ -1,0 +1,27 @@
+---
+title: Redis Demo com Spring Boot
+description: Uma aplicação demo construída em Java Spring Boot para demonstrar cache de permissões de usuários utilizando Redis. O projeto mostra na prática como reduzir a carga no banco de dados ao armazenar permissões temporariamente em cache.
+date: "2025-03-15"
+published: true
+repository: JoaoGuilherme08/redis-spring-boot-demo
+---
+
+Este projeto é uma **aplicação demo** desenvolvida em **Java 21 + Spring Boot** para mostrar como integrar o Redis de forma simples em uma API REST.  
+
+A aplicação expõe dois endpoints principais:  
+
+### `POST /redis/salvar`  
+Recebe `chave` e `valor` como parâmetros e os armazena no Redis.  
+
+```http
+POST /redis/salvar?chave=meuToken&valor=12345
+→ Salvo com sucesso: meuToken -> 12345
+```
+
+### `GET /redis/buscar`
+
+Recebe a chave e retorna o valor correspondente se existir.
+```http
+GET /redis/buscar?chave=meuToken
+→ Valor: 12345
+```

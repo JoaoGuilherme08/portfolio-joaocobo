@@ -1,0 +1,22 @@
+---
+title: Nostr decentralized social network (For Devs)
+description: Artigo sobre redes sociais descentralizadas
+date: "2023-03-08"
+published: true
+---
+
+![](/nostr.png)
+
+Recentemente tenho ouvido falar muito sobre "redes sociais descentralizadas", que tecnicamente significa que esses serviços ou redes não estão vinculados a um único servidor. Após muita pesquisa, encontrei um protocolo de rede chamado "Nostr", criado por um brasileiro conhecido como "Fiatjaf". Esse protocolo segue a mesma base do Blockchain de Bitcoin e possui duas chaves, uma pública e uma privada. A chave privada é responsável por armazenar todas as informações do perfil do usuário, como URL da imagem, nome, descrição, etc. Já a chave pública serve como um meio para que outros usuários possam encontrar o perfil na "multidão", permitindo que eles possam seguir ou trocar mensagens diretas.
+
+ O Nostr é criado em Golang e utiliza uma comunicação bidirecional baseada em Websockets, permitindo canais full-duplex. Essa tecnologia possibilita que diversos servidores recebam e emitam mensagens simultaneamente, sem a necessidade de um único servidor centralizado ou de um banco de armazenamento de informações.
+
+ O servidor que executa essa aplicação é conhecido como "Relay" e é um serviço "wss" de Websocket. Qualquer pessoa pode transformar seu próprio computador em um relay e contribuir com o projeto.
+
+ Atualmente, ainda é incerto o impacto que a adoção de redes sociais descentralizadas como o Nostr poderá gerar. Entretanto, imagine um cenário em que um Twitter sem censura seja possível, onde o usuário não pode ser banido ou inativado por um servidor centralizado, já que existem milhões de servidores espalhados pelo mundo. Mesmo que um usuário seja banido em um desses servidores, suas mensagens ainda seriam captadas e transmitidas pelos outros servidores. Isso pode gerar um ambiente de maior liberdade de expressão, mas também pode gerar desafios em relação à moderação de conteúdo e à segurança dos usuários.
+
+ Existem diversos projetos em andamento que utilizam o protocolo Nostr como base, inclusive uma rede social com a mesma proposta do Twitter. É possível conferir outras aplicações que utilizam o protocolo no site https://www.nostr.net/.
+
+ Este artigo apresenta apenas uma das possibilidades que o protocolo Nostr pode oferecer para a construção de redes sociais descentralizadas. Há uma infinidade de outras inovações que podem ser desenvolvidas utilizando esse protocolo, que ainda está em constante evolução e crescimento.
+
+GitHub do projeto: https://github.com/nostr-protocol/nostr
