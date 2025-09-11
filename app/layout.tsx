@@ -9,11 +9,10 @@ export const metadata: Metadata = {
     default: "joaocobo.com",
     template: "%s | joaocobo.com",
   },
-  description: "Co-founder of unkey.dev and founder of planetfall.io",
+  description: "Software Engineer | Tech Enthusiast",
   openGraph: {
     title: "joaocobo.com",
-    description:
-      "Co-founder of unkey.dev and founder of planetfall.io",
+    description: "Software Engineer | Tech Enthusiast",
     url: "https://joaocobo.com",
     siteName: "joaocobo.com",
     locale: "pt-BR",
