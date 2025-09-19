@@ -4,17 +4,12 @@ import { Mdx } from "@/app/components/mdx";
 import { Header } from "./header";
 import "./mdx.css";
 import { ReportView } from "./view";
-import { Redis } from "@upstash/redis";
-
-export const revalidate = 60;
 
 type Props = {
   params: {
     slug: string;
   };
 };
-
-const redis = Redis.fromEnv();
 
 export async function generateStaticParams(): Promise<Props["params"][]> {
   return allProjects
@@ -24,7 +19,7 @@ export async function generateStaticParams(): Promise<Props["params"][]> {
     }));
 }
 
-export default async function PostPage({ params }: Props) {
+export default function PostPage({ params }: Props) {
   const slug = params?.slug;
   const project = allProjects.find((project) => project.slug === slug);
 
@@ -32,8 +27,7 @@ export default async function PostPage({ params }: Props) {
     notFound();
   }
 
-  const views =
-    (await redis.get<number>(["pageviews", "projects", slug].join(":"))) ?? 0;
+  const views = 0; // Static value for export build
 
   return (
     <div className="bg-zinc-50 min-h-screen">
