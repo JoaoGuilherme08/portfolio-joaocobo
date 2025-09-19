@@ -1,24 +1,23 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { allProjects } from "contentlayer/generated";
 import { Card } from "../components/card";
 import { Article } from "./article";
-import { Redis } from "@upstash/redis";
 import { Eye, ArrowLeft, ExternalLink } from "lucide-react";
 import Particles from "../components/particles";
 
-const redis = Redis.fromEnv();
+export default function ProjectsPage() {
+  const [views, setViews] = useState<Record<string, number>>({});
 
-export const revalidate = 60;
-export default async function ProjectsPage() {
-  const views = (
-    await redis.mget<number[]>(
-      ...allProjects.map((p) => ["pageviews", "projects", p.slug].join(":")),
-    )
-  ).reduce((acc, v, i) => {
-    acc[allProjects[i].slug] = v ?? 0;
-    return acc;
-  }, {} as Record<string, number>);
+  useEffect(() => {
+    // Initialize views with 0 for static export
+    const initialViews = allProjects.reduce((acc, project) => {
+      acc[project.slug] = 0;
+      return acc;
+    }, {} as Record<string, number>);
+    setViews(initialViews);
+  }, []);
 
   const featured = allProjects.find((project) => project.slug === "agendyo")!;
   const top2 = allProjects.find((project) => project.slug === "demoredis")!;
