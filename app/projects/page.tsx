@@ -19,7 +19,7 @@ export default function ProjectsPage() {
     setViews(initialViews);
   }, []);
 
-  const featured = allProjects.find((project) => project.slug === "agendyo")!;
+  const featured = allProjects.find((project) => project.slug === "tucano-motorcycle")!;
   const top2 = allProjects.find((project) => project.slug === "demoredis")!;
   const top3 = allProjects.find((project) => project.slug === "sleepwakealert")!;
   const sorted = allProjects
